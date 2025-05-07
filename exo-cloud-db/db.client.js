@@ -1,19 +1,15 @@
 const { Sequelize } = require('sequelize')
 
-// database
-const sequelize = new Sequelize(
-  'postgres://fakeurl', // TODO
-  {
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
+const connectionString = process.env.DATABASE_URL;
+const sequelize = new Sequelize(connectionString, {
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
     },
   },
-);
+});
 
-// authentication and synchronization
 sequelize.authenticate()
   .then(() => {
     sequelize.sync().catch(() => console.log("Cannot sync the database"));
